@@ -1,0 +1,61 @@
+RELATÓRIO DE ATIVIDADE - BIG DATA E DATA SCIENCE
+Integrantes do Grupo: Guilherme Nogueira Medeiros, Arthur Machado Santos
+Data: 11/03/2026
+1. FONTE DE OBTENÇÃO DOS DADOS
+
+Os dados foram extraídos da API pública da CoinGecko (https://www.coingecko.com/pt/api). Esta é uma das fontes mais utilizadas no mercado financeiro para consulta de dados em tempo real sobre ativos digitais (criptomoedas). Os dados são fornecidos estruturados no formato JSON.
+
+2. CONTEXTO DE APLICAÇÃO DA BASE DE DADOS
+
+A base de dados foi aplicada no contexto de Inteligência de Mercado e Monitoramento Financeiro. O objetivo é criar um repositório histórico de preços de ativos como Bitcoin e Ethereum. Essa aplicação é fundamental para analistas que precisam identificar tendências de mercado, volatilidade de preços e realizar a automação de relatórios para tomada de decisão em investimentos.
+
+3. DEZ PERGUNTAS QUE PODERIAM SER RESPONDIDAS PELA ANÁLISE DESSA BASE
+
+Qual é a média de preço do Bitcoin no período coletado? 
+
+	Resposta: U$ 70.303,00.
+
+Qual foi o valor máximo e mínimo registrado para o Ethereum nas últimas 24 horas?
+	
+	Resposta: U$ 2.063,97-U$ 2.063,97
+
+Em quais horários do dia o Bitcoin apresenta a maior estabilidade de preço?
+	
+	Resposta: Por volta das 21:17h.
+
+Qual a diferença percentual de valor entre o Bitcoin e o Ethereum no momento atual?
+
+	Resposta: O Bitcoin é aproximadamente 34 vezes (3.306%) mais valioso que o Ethereum.
+
+Existe uma correlação entre a queda do Bitcoin e a queda do Ethereum nos registros coletados?
+
+	Resposta: Sim. Observamos que ambas as moedas mantiveram estabilidade no mesmo período, seguindo a tendência geral do mercado de criptoativos.
+
+Qual a frequência de atualização dos preços (intervalo médio entre as coletas)?
+
+	Resposta: A atualização é sob demanda. Cada execução do script Python gera uma nova entrada de dados no PostgreSQL.	
+
+Qual seria o valor total de uma carteira com 5 Bitcoins baseada no último registro do banco?
+
+	Resposta: U$ 351.515,00.
+
+Qual foi a maior variação de preço (volatilidade) em um curto espaço de tempo?
+
+	Resposta: A variação foi de apenas U$ 10,27 para o Ethereum (caindo de 2.063,97 para 2.053,70 entre as coletas).
+
+Quantas consultas foram realizadas com sucesso ao longo do dia?
+
+	Resposta: 2 consultas principais (uma para cada moeda selecionada).
+
+Qual moeda apresentou o maior crescimento percentual desde o primeiro registro na base?
+
+	Resposta: O Bitcoin, com o valor de U$ 70.303,00. 
+
+4. PROCESSO DE IMPORTAÇÃO PARA O POSTGRESQL
+
+O processo de importação foi realizado através de uma rotina automatizada de ETL (Extração, Transformação e Carga) utilizando a linguagem Python. O procedimento detalhado foi:
+Ferramentas: Python 3.14 e banco de dados PostgreSQL 18 (gerenciado pelo pgAdmin 4).
+Extração: Utilizamos a biblioteca 'requests' para realizar uma requisição HTTP do tipo GET na API, capturando os dados brutos em JSON.
+Transformação: O script Python tratou os dados, isolando os valores decimais de preço e formatando os nomes das moedas.
+Conexão: Utilizamos o driver 'psycopg2' para estabelecer a comunicação entre o script e o servidor local do banco de dados na porta 5433.
+Carga: Através de um cursor SQL, o script executou comandos do tipo 'INSERT' na tabela 'consulta_moedas', enviando os dados tratados de forma persistente para o banco.

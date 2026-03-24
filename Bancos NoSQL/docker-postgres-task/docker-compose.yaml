@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:latest
+    container_name: postgres_container
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: faculdade_db
+    ports:
+      - "5433:5432"
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin_container
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: aluno@teste.com
+      PGADMIN_DEFAULT_PASSWORD: senha_pgadmin
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
