@@ -2,62 +2,45 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# ----------------------------------------------------
-# 1. Configuração inicial do Dashboard
-# ----------------------------------------------------
 st.set_page_config(layout="wide")
 st.title('Dashboard Financeiro - Agro Goiás - 2014-2024')
 st.write('### Inteligência de Negócios (Business Intelligence - BI)')
 
-# ----------------------------------------------------
-# 2. Carregamento e Tratamento de Dados
-# ----------------------------------------------------
-# Carregando o arquivo
+
 df = pd.read_csv("financiamentoPecuaria.csv", encoding='utf-8-sig', sep=';')
 
-# Removendo a coluna 'Variável' caso exista
 if 'Variável' in df.columns:
     df = df.drop(columns=['Variável'])
 
-# Colunas que contêm os anos (da segunda coluna em diante)
 colunas_anos = df.columns[1:]
 
-# Convertendo cada coluna de ano para número (Float) de forma segura
 for col in colunas_anos:
     texto = df[col].astype(str).str.strip()
     texto = texto.replace('-', '0') 
     texto = texto.str.replace('.', '', regex=False).str.replace(',', '.', regex=False)
     df[col] = pd.to_numeric(texto, errors='coerce').fillna(0).round(2)
 
-# Criando uma coluna com a média de investimentos para cada localidade
 df["Md_Invest"] = df[colunas_anos].mean(axis=1).round(2)
 
-# Inserir uma linha com a média de investimento para cada ano
 mean_values = df[colunas_anos].mean().round(2)
 nova_linha = ["Média"] + mean_values.tolist() + [mean_values.mean().round(2)]
 
-# Concatena a nova linha ao dataframe original
 df_media = pd.DataFrame([nova_linha], columns=df.columns)
 df = pd.concat([df, df_media], ignore_index=True)
 
-# ----------------------------------------------------
-# 3. Estrutura da Barra Lateral (Sidebar)
-# ----------------------------------------------------
+
 df["Localidade"] = df["Localidade"].astype(str).str.strip()
 
 localidades = df.loc[df["Localidade"] != "Média", "Localidade"].unique().tolist()
 opcoes_localidade = ["Todos"] + localidades
 localidade_selecionada = st.sidebar.selectbox("Selecione a Localidade:", opcoes_localidade)
 
-# Filtra o dataset de acordo com a seleção
 if localidade_selecionada != "Todos":
     df_local = df[df["Localidade"] == localidade_selecionada]
 else:
     df_local = pd.DataFrame()
 
-# ----------------------------------------------------
-# 4. Construção dos Gráficos (Colunas)
-# ----------------------------------------------------
+
 col1, col2 = st.columns(2)
 col3, col4 = st.columns(2)
 
