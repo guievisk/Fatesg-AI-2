@@ -29,6 +29,3 @@ The application flow was structured into three main enhancement stages:
 
 The project was built in a notebook format, making it ideal for execution in **Google Colab** or **Jupyter Notebook / VS Code**.
 
-1. Clone the repository to your environment:
-   ```bash
-   git clone [https://github.com/YOUR_USERNAME/YOUR_REPOSITORY.git](https://github.com/YOUR_USERNAME/YOUR_REPOSITORY.git)
